@@ -1,97 +1,106 @@
-# Real-World Validation of ML Models for HIV Treatment Adherence Prediction
+# Paper 2: Facility-Level Structural Drivers of HIV Treatment Outcomes
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![TRIPOD](https://img.shields.io/badge/Reporting-TRIPOD-orange)](https://www.tripod-statement.org/)
-[![Streamlit](https://img.shields.io/badge/Demo-Streamlit-red)](app/demo.py)
+## Overview
 
-> **"Real-World Validation of Machine Learning Models for HIV Treatment Adherence Prediction and Care Gap Quantification: A Multi-Country Analysis of 192,732 Clinical Records"**
-> Lakshmi Kalyani Chinthala | ORCID: [0009-0009-8736-6673](https://orcid.org/0009-0009-8736-6673)
+Analysis code for:
+
+> **"Facility-Level Structural Drivers of HIV Treatment Outcomes: A Multi-Level Analysis of 27,288 Patients from a Nigerian HIV Programme and Implications for PEPFAR and Global Fund Programming"**
+>
+> Lakshmi Kalyani Chinthala  
+> Independent Researcher, Golden Gate University  
+> ORCID: [0009-0009-8736-6673](https://orcid.org/0009-0009-8736-6673)  
+> Submitted to: BMJ Global Health
+
+---
+
+## Research Question
+
+Which facility-level characteristics (care level, ownership type, funding model) are independently associated with poor HIV treatment outcomes after adjustment for patient-level clinical factors?
+
+---
+
+## Dataset
+
+**Quality of Care HIV Dataset** (same as Paper 1)
+- Source: [Kaggle — iogbonna (2022)](https://www.kaggle.com/datasets/iogbonna/quality-of-care-dataset-for-hiv-clients)
+- 27,288 HIV-positive patients on ART
+- Nigerian national HIV programme, July 2006 – December 2018
+- Place in `data/` directory before running
+
+---
 
 ## Key Results
 
-| Metric | Value |
-|--------|-------|
-| AUC-ROC (10-fold CV, primary model) | 0.9627 ± 0.0019 |
-| AUC-ROC (temporal validation) | 0.772 (95% CI: 0.744–0.802) |
-| Sensitivity | 87.3% | Specificity | 95.7% | Brier Score | 0.079 |
-| Median diagnosis-to-ART delay | 74 days | Patients delayed >90 days | 47.3% |
-| Economic savings (base case) | USD 415/patient |
+| Finding | Result |
+|---------|--------|
+| Primary HC vs Tertiary (adjusted OR) | 1.95 (95% CI: 1.45–2.61, p<0.001) |
+| NGO funding (adjusted OR) | 1.24 (95% CI: 1.10–1.39, p<0.001) |
+| Federal funding (adjusted OR) | 1.25 (95% CI: 1.06–1.46, p=0.005) |
+| Sex — Female (adjusted OR) | 0.87 (95% CI: 0.79–0.96, p=0.003) |
+| ICC (facility-level clustering) | 2.2% |
+| LR test — facility vars improve fit | chi-squared=53.6, p<0.001 |
+| Excess poor outcomes (sub-tertiary) | ~397 in this dataset |
 
-**Primary model design:** ART interruption excluded (14 features) to maximise prospective deployability. Full 15-feature model provided as secondary analysis.
+> **Note:** Primary HC finding is preliminary (n=521, 1.9% of sample). External validation required.
 
-## Datasets (free, public, no registration)
+---
 
-1. [Quality of Care HIV Dataset](https://www.kaggle.com/datasets/iogbonna/quality-of-care-dataset-for-hiv-clients) — 27,288 HIV+ patients on ART
-2. CEPHIA HIV Recency Assay Public Use Dataset (v20210604) — 165,444 HIV+ specimens, 6 countries
-
-Download both to `data/`.
-
-## Repository Structure
+## Scripts (run in order)
 
 ```
-smartdaas-hiv-validation/
-├── src/
-│   ├── utils.py                      # Constants, colors, parameters
-│   ├── 01_data_preprocessing.py      # Feature engineering + SMOTE
-│   ├── 02_model_training_cv.py       # 10-fold CV, all 4 classifiers
-│   ├── 03_temporal_validation.py     # Temporal train/test split
-│   ├── 04_shap_explainability.py     # SHAP KernelExplainer
-│   ├── 05_decision_curve_analysis.py # DCA net benefit
-│   ├── 06_subgroup_fairness.py       # Subgroup AUC by demographics
-│   ├── 07_economic_modelling.py      # Sensitivity analysis
-│   └── 08_figures.py                 # All publication figures (300 DPI)
-├── app/
-│   └── demo.py                       # Streamlit interactive risk predictor
-├── data/                             # Place datasets here (gitignored)
-├── figures/                          # Output figures (gitignored)
-├── results/                          # Output pickles/CSVs (gitignored)
-├── requirements.txt
-└── setup.sh
+paper2/src/
+├── 01_feature_engineering.py      # Outcome variables + facility features
+├── 02_descriptive_analysis.py     # Table 1 + chi-squared tests
+├── 03_logistic_regression.py      # Main model + HC3 robust SEs
+├── 04_icc_model_comparison.py     # ICC + AIC/BIC comparison
+├── 05_interaction_analysis.py     # Funding × facility level interactions
+├── 06_sensitivity_analyses.py     # 4 pre-specified sensitivity models
+├── 07_facility_typology.py        # Positive deviant analysis
+├── 08_missing_data.py             # Missing data characterisation
+├── 09_economic_implications.py    # Excess outcomes + cost estimates
+└── 10_figures.py                  # All 12 publication figures (300 DPI)
 ```
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/Kchinthala15/smartdaas-hiv-validation.git
-cd smartdaas-hiv-validation
-bash setup.sh && source venv/bin/activate
+# From repo root
+pip install -r requirements.txt
 
-# Run full pipeline
-python src/01_data_preprocessing.py
-python src/02_model_training_cv.py
-python src/03_temporal_validation.py
-python src/04_shap_explainability.py
-python src/05_decision_curve_analysis.py
-python src/06_subgroup_fairness.py
-python src/07_economic_modelling.py
-python src/08_figures.py
+# Place QualityOfCare.xlsx in data/
 
-# Launch interactive demo
-streamlit run app/demo.py
+python paper2/src/01_feature_engineering.py
+python paper2/src/02_descriptive_analysis.py
+python paper2/src/03_logistic_regression.py
+python paper2/src/04_icc_model_comparison.py
+python paper2/src/05_interaction_analysis.py
+python paper2/src/06_sensitivity_analyses.py
+python paper2/src/07_facility_typology.py
+python paper2/src/08_missing_data.py
+python paper2/src/09_economic_implications.py
+python paper2/src/10_figures.py
 ```
 
-## Reproducibility
+---
 
-- All transforms fitted **only on training folds** (via sklearn Pipeline)
-- SMOTE applied **exclusively within training folds**
-- Hold-out test set untouched during all training/preprocessing
-- Fixed seed: `SEED = 42` in `src/utils.py`
-- TRIPOD reporting guidelines followed
+## Methodological Notes
 
-## Citation
+- **Clustering:** 11 facility-level clusters precluded GEE or mixed-effects logistic regression (both require ≥20–30 clusters). HC3 heteroscedasticity-robust standard errors used throughout.
+- **ICC:** Estimated from null linear probability mixed model — 2.2% of variance attributable to facility level.
+- **SMOTE:** Not applied in this paper (outcomes modelled at natural prevalence for ecological validity).
+- **STROBE:** Reporting guidelines followed throughout.
 
-```bibtex
-@article{chinthala2026hiv,
-  title  = {Real-World Validation of ML Models for HIV Treatment Adherence Prediction},
-  author = {Chinthala, Lakshmi Kalyani},
-  journal= {Submitted to npj Digital Medicine},
-  year   = {2026},
-  url    = {https://github.com/Kchinthala15/smartdaas-hiv-validation}
-}
-```
+---
 
-## Contact
-kchinthala@my.ggu.edu | [ORCID](https://orcid.org/0009-0009-8736-6673)
+## Part of a Two-Paper Series
 
-> ⚠️ Research purposes only. Not validated for clinical use.
+| Paper | Focus | Journal |
+|-------|-------|---------|
+| Paper 1 | Patient-level ML prediction (AUC 0.963) | npj Digital Medicine (under review) |
+| Paper 2 | Facility-level health systems analysis | BMJ Global Health (submitted) |
+
+---
+
+## License
+
+MIT — see root [LICENSE](../../LICENSE)
