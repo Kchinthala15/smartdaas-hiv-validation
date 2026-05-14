@@ -396,7 +396,7 @@ elif page == "📊  Patient Risk":
         mean_sv, shap_exp = compute_shap(X_raw)
 
     order  = np.argsort(mean_sv)
-    f_names = [FEAT_LABELS.get(FEATURES[int(i)], FEATURES[int(i)]) for i in order]
+    f_names = [FEATURE_LABELS.get(FEATURES[i], FEATURES[i]) for i in order]
     f_vals  = mean_sv[order]
     f_colors = ['#21d4fd' if v >= np.percentile(mean_sv, 60) else '#0072b2' for v in f_vals]
 
