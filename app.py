@@ -484,7 +484,11 @@ except Exception:
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("<p class='section-header'>Feature Importance (SHAP)</p>", unsafe_allow_html=True)
 
-        with st.spinner("Computing SHAP explanations..."):
+with st.spinner("Computing SHAP explanations..."):
+    sample_size = min(100, len(X))
+    idx_s = np.random.choice(len(X), sample_size, replace=False)
+    X_sample = X[idx_s]
+
             sample_size = min(100, len(X))
             idx_s = np.random.choice(len(X), sample_size, replace=False)
             X_sample = X[idx_s]
