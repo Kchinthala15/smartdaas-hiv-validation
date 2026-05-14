@@ -82,7 +82,7 @@ FEATURES = [
     'had_interruption','opp_infection','side_effects','tb_positive','stage_worsened'
 ]
 
-FEATURE_LABELS = {
+FEAT_LABELS = {
     'Age':'Age (years)', 'sex_female':'Sex (Female=1)',
     'Cd4AtStart':'CD4 at ART Start', 'MostRecentCd4Count':'Most Recent CD4',
     'CD4_improvement':'CD4 Improvement', 'stage_start_num':'WHO Stage (1–4)',
@@ -395,12 +395,8 @@ elif page == "📊  Patient Risk":
     with st.spinner("Computing SHAP explanations..."):
         mean_sv, shap_exp = compute_shap(X_raw)
 
-    order  = np.argsort(mean_sv).ravel().tolist()
-    f_names = []
-for idx in order:
-    j = int(idx)
-    feat = FEATURES[j]
-    f_names.append(FEATURE_LABELS.get(feat, feat))
+    order  = np.argsort(mean_sv)
+    f_names = [FEAT_LABELS.get(FEATURES[int(i)], FEATURES[int(i)]) for i in order]
     f_vals  = mean_sv[order]
     f_colors = ['#21d4fd' if v >= np.percentile(mean_sv, 60) else '#0072b2' for v in f_vals]
 
@@ -482,23 +478,19 @@ for idx in order:
         st.download_button("📥 Download All Risk Scores (CSV)",
                            data=export.to_csv(index=False).encode(),
                            file_name="smartdaas_risk_scores.csv", mime="text/csv")
-   
     with c2:
-     high_df = export[export['risk_label'] == 'HIGH']
-     st.download_button(
-        f"🚨 Download High Risk Only ({n_high})",
-        data=high_df.to_csv(index=False).encode(),
-        file_name="smartdaas_high_risk.csv",
-        mime="text/csv"
-    )
+        high_df = export[export['risk_label']=='HIGH']
+        st.download_button(f"🚨 Download High Risk Only ({n_high})",
+                           data=high_df.to_csv(index=False).encode(),
+                           file_name="smartdaas_high_risk.csv", mime="text/csv")
+
 
 # ═════════════════════════════════════════════════════════════
 #  PAGE 3 — FACILITY INTELLIGENCE
 # ═════════════════════════════════════════════════════════════
-if page == "🏥  Facility Intelligence":
+elif page == "🏥  Facility Intelligence":
 
-
-  st.markdown("""
+    st.markdown("""
     ### Facility-Level HIV Programme Intelligence
     Identifies structural drivers of poor outcomes across facility levels, ownership types,
     and funding models. Based on 27,288 patients from a Nigerian HIV programme (Paper 2).
