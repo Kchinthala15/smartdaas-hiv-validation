@@ -480,8 +480,7 @@ try:
 except Exception:
     st.dataframe(df_display, height=280, use_container_width=True)
 
-
-        # ── SHAP EXPLANATIONS ─────────────────────────────
+   # ── SHAP EXPLANATIONS ─────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown('<p class="section-header">Feature Importance (SHAP)</p>', unsafe_allow_html=True)
 
