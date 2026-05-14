@@ -495,7 +495,7 @@ for idx in order:
 # ═════════════════════════════════════════════════════════════
 #  PAGE 3 — FACILITY INTELLIGENCE
 # ═════════════════════════════════════════════════════════════
-elif page == "🏥  Facility Intelligence":
+if page == "🏥  Facility Intelligence":
 
 
 
