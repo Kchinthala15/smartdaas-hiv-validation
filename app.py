@@ -395,8 +395,12 @@ elif page == "📊  Patient Risk":
     with st.spinner("Computing SHAP explanations..."):
         mean_sv, shap_exp = compute_shap(X_raw)
 
-    order  = np.argsort(mean_sv)
-    f_names = [FEATURE_LABELS.get(FEATURES[int(i)], FEATURES[int(i)]) for i in np.argsort(mean_sv)]
+    order  = np.argsort(mean_sv).ravel().tolist()
+    f_names = []
+for idx in order:
+    j = int(idx)
+    feat = FEATURES[j]
+    f_names.append(FEATURE_LABELS.get(feat, feat))
     f_vals  = mean_sv[order]
     f_colors = ['#21d4fd' if v >= np.percentile(mean_sv, 60) else '#0072b2' for v in f_vals]
 
