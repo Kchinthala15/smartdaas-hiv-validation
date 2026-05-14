@@ -483,10 +483,19 @@ for idx in order:
                            data=export.to_csv(index=False).encode(),
                            file_name="smartdaas_risk_scores.csv", mime="text/csv")
     with c2:
-        high_df = export[export['risk_label']=='HIGH']
-        st.download_button(f"🚨 Download High Risk Only ({n_high})",
-                           data=high_df.to_csv(index=False).encode(),
-                           file_name="smartdaas_high_risk.csv", mime="text/csv")
+    high_df = export[export['risk_label'] == 'HIGH']
+    st.download_button(
+        f"🚨 Download High Risk Only ({n_high})",
+        data=high_df.to_csv(index=False).encode(),
+        file_name="smartdaas_high_risk.csv",
+        mime="text/csv"
+    )
+
+# ═════════════════════════════════════════════════════════════
+#  PAGE 3 — FACILITY INTELLIGENCE
+# ═════════════════════════════════════════════════════════════
+elif page == "🏥  Facility Intelligence":
+
 
 
 # ═════════════════════════════════════════════════════════════
