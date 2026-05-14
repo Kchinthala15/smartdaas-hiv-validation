@@ -494,8 +494,8 @@ elif page == "📊 Predict Risk":
         fig, ax = plt.subplots(figsize=(7, 4), facecolor='#161b22')
         ax.set_facecolor('#161b22')
         sorted_idx = np.argsort(mean_shap)
-        feat_names = [FEATURE_LABELS.get(FEATURES[i], FEATURES[i]) for i in sorted_idx]
-        colors = ['#21d4fd' if mean_shap[i] >= np.percentile(mean_shap, 60)
+        feat_names = [FEATURE_LABELS.get(FEATURES[int(i)], FEATURES[int(i)]) for i in sorted_idx]
+        colors = ['#21d4fd' if mean_shap[int(i)] >= np.percentile(mean_shap, 60)
                   else '#0072b2' for i in sorted_idx]
         bars = ax.barh(range(len(feat_names)), mean_shap[sorted_idx],
                        color=colors, height=0.65, edgecolor='#0d1117', linewidth=0.3)
@@ -553,7 +553,7 @@ elif page == "📊 Predict Risk":
             top_n = 10
             top_idx = sorted_pt[-top_n:]
             vals = pt_sv[top_idx]
-            names = [FEATURE_LABELS.get(FEATURES[i], FEATURES[i]) for i in top_idx]
+            names = [FEATURE_LABELS.get(FEATURES[int(i)], FEATURES[int(i)]) for i in top_idx]
             colors_pt = ['#f85149' if v > 0 else '#3fb950' for v in vals]
             ax.barh(range(len(names)), vals, color=colors_pt,
                     height=0.65, edgecolor='#0d1117', linewidth=0.3)
