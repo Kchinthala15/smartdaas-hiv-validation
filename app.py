@@ -463,13 +463,17 @@ elif page == "📊 Predict Risk":
             display_cols = [c for c in display_cols if c in df_input.columns]
 
             def color_risk(val):
-                if val == 'HIGH':   return 'background-color: #2d1115; color: #f85149'
-                if val == 'MEDIUM': return 'background-color: #1c1a0f; color: #e3b341'
-                return 'background-color: #0d1f17; color: #3fb950'
+                pass  # styling handled by emoji labels
 
-            df_display = df_input[display_cols].sort_values('risk_pct', ascending=False)
-            styled = df_display.style.applymap(color_risk, subset=['risk_label'])
-            st.dataframe(styled, height=280, use_container_width=True)
+            def safe_label(label):
+                if label == "HIGH":   return "🔴 HIGH"
+                if label == "MEDIUM": return "🟡 MEDIUM"
+                return "🟢 LOW"
+
+            df_display = df_input[display_cols].copy()
+            df_display['risk_label'] = df_display['risk_label'].apply(safe_label)
+            df_display = df_display.sort_values('risk_pct', ascending=False)
+            st.dataframe(df_display, height=280, use_container_width=True)
 
         # ── SHAP EXPLANATIONS ─────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
