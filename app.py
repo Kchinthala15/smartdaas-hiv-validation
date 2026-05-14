@@ -335,7 +335,7 @@ if page == "🏠 Home":
     st.markdown("---")
     st.markdown("""
     ### Interested in a pilot?
-    Email: **lakshmi@smartdaas.ai**
+    Email: **chinthalakalyani1@gmail.com**
     """)
 
     # — EXISTING DISCLAIMER (kept exactly as you had it) —
