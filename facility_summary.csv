@@ -1,0 +1,12 @@
+Health facility level,FacilityType,N,poor_adh,mortality,interrupted,late_stage,delayed_ART,poor_outcome,cd4_mean
+Primary health center,Faith Based,12,0.0,0.0,0.0,0.0833,0.25,0.0,459.9
+Primary health center,Private for profit,64,0.1719,0.0,0.1562,0.125,0.2344,0.2656,328.9677
+Primary health center,Public,445,0.0404,0.0112,0.0989,0.1551,0.2247,0.1416,377.7679
+Secondary health facility,Faith Based,2923,0.0315,0.0079,0.0944,0.1502,0.2494,0.1221,391.4965
+Secondary health facility,Private for profit,429,0.035,0.0023,0.1026,0.1096,0.2821,0.1259,287.3191
+Secondary health facility,Private not for profit,91,0.022,0.0,0.044,0.0549,0.3077,0.0659,354.5057
+Secondary health facility,Public,14539,0.0397,0.0098,0.0942,0.2169,0.2567,0.1229,442.6962
+Tertiary hospital,Faith Based,238,0.0252,0.0042,0.1681,0.0504,0.3361,0.1807,282.987
+Tertiary hospital,Private for profit,3,0.0,0.0,0.3333,0.3333,0.3333,0.3333,171.0
+Tertiary hospital,Private not for profit,1,0.0,0.0,0.0,0.0,0.0,0.0,391.0
+Tertiary hospital,Public,8543,0.0256,0.0073,0.0785,0.135,0.2938,0.0997,506.8328

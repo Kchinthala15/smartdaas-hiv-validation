@@ -1,0 +1,18 @@
+facility_group,n,observed_rate,expected_rate,risk_adjusted_ratio,excess_risk_pp,performance_type
+Primary health center | Faith Based,10,0.0,0.17371453266053977,0.0,-17.371453266053976,"Positive Deviant
+(Better than expected)"
+Tertiary hospital | Private not for profit,1,0.0,0.09317206421845109,0.0,-9.317206421845109,"Positive Deviant
+(Better than expected)"
+Secondary health facility | Private not for profit,86,0.05813953488372093,0.11325234750825573,0.5133627351917164,-5.511281262453481,"Positive Deviant
+(Better than expected)"
+Secondary health facility | Faith Based,2387,0.106828655215752,0.115259099735564,0.9268565819171436,-0.8430444519812008,Expected performer
+Secondary health facility | Private for profit,340,0.12941176470588237,0.13955726751810646,0.9273022251534998,-1.0145502812224094,Expected performer
+Tertiary hospital | Public,6482,0.09611231101511879,0.09955673337529984,0.9654024168591733,-0.3444422360181054,Expected performer
+Primary health center | Public,341,0.15542521994134897,0.15880652264526463,0.9787080363728594,-0.33813027039156507,Expected performer
+Secondary health facility | Public,10722,0.1119194180190263,0.10927880582814235,1.024163992009912,0.2640612190883948,Expected performer
+Primary health center | Private for profit,58,0.25862068965517243,0.20879018019585077,1.238663089483324,4.983050945932166,"Underperformer
+(Worse than expected)"
+Tertiary hospital | Faith Based,221,0.19004524886877827,0.09112843260001484,2.0854660115019614,9.891681626876343,"Underperformer
+(Worse than expected)"
+Tertiary hospital | Private for profit,3,0.3333333333333333,0.14689953082815083,2.2691245605357344,18.64338025051825,"Underperformer
+(Worse than expected)"
