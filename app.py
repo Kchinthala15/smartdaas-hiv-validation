@@ -421,6 +421,178 @@ elif page == "📊 Predict Risk":
         with col2:
             st.markdown(f"""
             <div class="risk-card risk-medium">
+                <div class="risk-number">{n_medium}</div>
+                <div class="risk-label">Medium Risk</div>
+            </div>
+            """, unsafe_allow_html=True)
+        with col3:
+            st.markdown(f"""
+            <div class="risk-card risk-low">
+                <div class="risk-number">{n_low}</div>
+                <div class="risk-label">Low Risk</div>
+            </div>
+            """, unsafe_allow_html=True)
+        with col4:
+            high_pct = n_high/n_total*100
+            st.markdown(f"""
+            <div class="metric-box" style="height:100%">
+                <div class="metric-val">{high_pct:.0f}%</div>
+                <div class="metric-lbl">High Risk Rate</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+
+        # ── RISK DISTRIBUTION CHART ───────────────────────
+        col_chart, col_table = st.columns([1, 2])
+        with col_chart:
+            st.markdown('<p class="section-header">Risk Distribution</p>', unsafe_allow_html=True)
+            fig, ax = plt.subplots(figsize=(4,3), facecolor='#161b22')
+            ax.set_facecolor('#161b22')
+            ax.hist(probs, bins=30, color='#21d4fd', alpha=0.7, edgecolor='#0d1117', linewidth=0.5)
+            ax.axvline(0.7, color='#f85149', lw=1.5, linestyle='--', label='High risk threshold')
+            ax.axvline(0.4, color='#e3b341', lw=1.5, linestyle='--', label='Medium threshold')
+            ax.set_xlabel('Risk Score', color='#8b949e', fontsize=9)
+            ax.set_ylabel('Patients', color='#8b949e', fontsize=9)
+            ax.tick_params(colors='#8b949e', labelsize=8)
+            for spine in ax.spines.values(): spine.set_color('#30363d')
+            ax.legend(fontsize=7, facecolor='#161b22', labelcolor='#8b949e')
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close()
+
+        # ── PATIENT TABLE ─────────────────────────────────
+        with col_table:
+            st.markdown('<p class="section-header">Patient Risk Scores</p>', unsafe_allow_html=True)
+            display_cols = ['patient_id', 'risk_pct', 'risk_label', 'Age',
+                           'Cd4AtStart', 'stage_start_num', 'had_interruption']
+            display_cols = [c for c in display_cols if c in df_input.columns]
+
+            def color_risk(val):
+                if val == 'HIGH':   return 'background-color: #2d1115; color: #f85149'
+                if val == 'MEDIUM': return 'background-color: #1c1a0f; color: #e3b341'
+                return 'background-color: #0d1f17; color: #3fb950'
+
+            df_display = df_input[display_cols].sort_values('risk_pct', ascending=False)
+            styled = df_display.style.applymap(color_risk, subset=['risk_label'])
+            st.dataframe(styled, height=280, use_container_width=True)
+
+        # ── SHAP EXPLANATIONS ─────────────────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<p class="section-header">Feature Importance (SHAP)</p>', unsafe_allow_html=True)
+
+        with st.spinner("Computing SHAP explanations..."):
+            sample_size = min(100, len(X))
+            idx_s = np.random.choice(len(X), sample_size, replace=False)
+            X_sample = X[idx_s]
+
+            explainer = shap.TreeExplainer(model)
+            sv = explainer.shap_values(X_sample)
+            if isinstance(sv, list): sv = sv[1]
+            mean_shap = np.abs(sv).mean(axis=0)
+
+        fig, ax = plt.subplots(figsize=(7, 4), facecolor='#161b22')
+        ax.set_facecolor('#161b22')
+        sorted_idx = np.argsort(mean_shap)
+        feat_names = [FEATURE_LABELS.get(FEATURES[i], FEATURES[i]) for i in sorted_idx]
+        colors = ['#21d4fd' if mean_shap[i] >= np.percentile(mean_shap, 60)
+                  else '#0072b2' for i in sorted_idx]
+        bars = ax.barh(range(len(feat_names)), mean_shap[sorted_idx],
+                       color=colors, height=0.65, edgecolor='#0d1117', linewidth=0.3)
+        for i, (bar, val) in enumerate(zip(bars, mean_shap[sorted_idx])):
+            ax.text(val + 0.001, i, f'{val:.4f}',
+                    va='center', fontsize=7.5, color='#8b949e')
+        ax.set_yticks(range(len(feat_names)))
+        ax.set_yticklabels(feat_names, fontsize=8.5, color='#e6edf3')
+        ax.set_xlabel('Mean |SHAP Value|  (average impact on risk prediction)', color='#8b949e', fontsize=9)
+        ax.tick_params(colors='#8b949e', labelsize=8)
+        for spine in ax.spines.values(): spine.set_color('#30363d')
+        ax.set_title('Global Feature Importance — All Patients', color='#e6edf3', fontsize=10, pad=10)
+        plt.tight_layout()
+        st.pyplot(fig)
+        plt.close()
+
+        # ── INDIVIDUAL PATIENT EXPLORER ───────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<p class="section-header">Individual Patient Explorer</p>', unsafe_allow_html=True)
+
+        patient_ids = df_input['patient_id'].tolist()
+        selected_id = st.selectbox("Select patient to inspect:", patient_ids,
+                                    index=df_input['risk_pct'].idxmax())
+
+        pt_idx = df_input[df_input['patient_id']==selected_id].index[0]
+        pt_pos = df_input.index.get_loc(pt_idx)
+        pt_score = df_input.loc[pt_idx, 'risk_pct']
+        pt_label = df_input.loc[pt_idx, 'risk_label']
+        pt_X = X[pt_pos:pt_pos+1]
+        pt_sv = explainer.shap_values(pt_X)
+        if isinstance(pt_sv, list): pt_sv = pt_sv[1]
+        pt_sv = pt_sv[0]
+
+        col_score, col_explain = st.columns([1, 2])
+        with col_score:
+            card_class = f"risk-{'high' if pt_label=='HIGH' else 'medium' if pt_label=='MEDIUM' else 'low'}"
+            st.markdown(f"""
+            <div class="risk-card {card_class}" style="margin-bottom:1rem">
+                <div class="risk-number">{pt_score:.1f}%</div>
+                <div class="risk-label">{pt_label} RISK</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            pt_data = df_input.loc[pt_idx, FEATURES]
+            for feat in FEATURES[:8]:
+                label = FEATURE_LABELS.get(feat, feat)
+                val = pt_data[feat]
+                st.markdown(f"**{label}:** `{val:.1f}`")
+
+        with col_explain:
+            fig, ax = plt.subplots(figsize=(6, 4), facecolor='#161b22')
+            ax.set_facecolor('#161b22')
+            sorted_pt = np.argsort(np.abs(pt_sv))
+            top_n = 10
+            top_idx = sorted_pt[-top_n:]
+            vals = pt_sv[top_idx]
+            names = [FEATURE_LABELS.get(FEATURES[i], FEATURES[i]) for i in top_idx]
+            colors_pt = ['#f85149' if v > 0 else '#3fb950' for v in vals]
+            ax.barh(range(len(names)), vals, color=colors_pt,
+                    height=0.65, edgecolor='#0d1117', linewidth=0.3)
+            ax.axvline(0, color='#8b949e', lw=0.8)
+            ax.set_yticks(range(len(names)))
+            ax.set_yticklabels(names, fontsize=8.5, color='#e6edf3')
+            ax.set_xlabel('SHAP Value (red = increases risk, green = reduces risk)',
+                         color='#8b949e', fontsize=8)
+            ax.tick_params(colors='#8b949e', labelsize=8)
+            for spine in ax.spines.values(): spine.set_color('#30363d')
+            ax.set_title(f'Why is {selected_id} {pt_label} risk?',
+                        color='#e6edf3', fontsize=10, pad=10)
+            plt.tight_layout()
+            st.pyplot(fig)
+            plt.close()
+
+        # ── EXPORT ────────────────────────────────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown('<p class="section-header">Export Results</p>', unsafe_allow_html=True)
+
+        export_df = df_input[['patient_id','risk_pct','risk_label'] +
+                              [c for c in FEATURES if c in df_input.columns]].copy()
+        csv_bytes = export_df.to_csv(index=False).encode()
+
+        col_dl1, col_dl2 = st.columns(2)
+        with col_dl1:
+            st.download_button(
+                "📥 Download Risk Scores (CSV)",
+                data=csv_bytes,
+                file_name="smartdaas_risk_scores.csv",
+                mime="text/csv"
+            )
+        with col_dl2:
+            high_risk_df = export_df[export_df['risk_label']=='HIGH']
+            st.download_button(
+                f"🚨 Download High Risk Patients Only ({n_high})",
+                data=high_risk_df.to_csv(index=False).encode(),
+                file_name="smartdaas_high_risk.csv",
+                mime="text/csv"
+            )
 # ───────────────────────────────────────────────────────────
 #  CHUNK 4 — MODEL INFO PAGE + SAMPLE DATA PAGE
 # ───────────────────────────────────────────────────────────
