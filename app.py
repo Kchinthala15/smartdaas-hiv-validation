@@ -480,9 +480,9 @@ try:
 except Exception:
     st.dataframe(df_display, height=280, use_container_width=True)
 
-   # ── SHAP EXPLANATIONS ─────────────────────────────
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown('<p class="section-header">Feature Importance (SHAP)</p>', unsafe_allow_html=True)
+# SHAP EXPLANATIONS
+st.markdown("<br>", unsafe_allow_html=True)
+st.markdown("<p class='section-header'>Feature Importance (SHAP)</p>", unsafe_allow_html=True)
 
         with st.spinner("Computing SHAP explanations..."):
             sample_size = min(100, len(X))
