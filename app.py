@@ -82,7 +82,7 @@ FEATURES = [
     'had_interruption','opp_infection','side_effects','tb_positive','stage_worsened'
 ]
 
-FEAT_LABELS = {
+FEATURE_LABELS = {
     'Age':'Age (years)', 'sex_female':'Sex (Female=1)',
     'Cd4AtStart':'CD4 at ART Start', 'MostRecentCd4Count':'Most Recent CD4',
     'CD4_improvement':'CD4 Improvement', 'stage_start_num':'WHO Stage (1–4)',
