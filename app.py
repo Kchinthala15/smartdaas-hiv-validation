@@ -482,7 +482,7 @@ for idx in order:
         st.download_button("📥 Download All Risk Scores (CSV)",
                            data=export.to_csv(index=False).encode(),
                            file_name="smartdaas_risk_scores.csv", mime="text/csv")
-    with c2:
+   with c2:
     high_df = export[export['risk_label'] == 'HIGH']
     st.download_button(
         f"🚨 Download High Risk Only ({n_high})",
@@ -490,6 +490,7 @@ for idx in order:
         file_name="smartdaas_high_risk.csv",
         mime="text/csv"
     )
+
 
 # ═════════════════════════════════════════════════════════════
 #  PAGE 3 — FACILITY INTELLIGENCE
