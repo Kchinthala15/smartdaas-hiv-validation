@@ -498,10 +498,7 @@ for idx in order:
 if page == "🏥  Facility Intelligence":
 
 
-
-
-
-st.markdown("""
+  st.markdown("""
     ### Facility-Level HIV Programme Intelligence
     Identifies structural drivers of poor outcomes across facility levels, ownership types,
     and funding models. Based on 27,288 patients from a Nigerian HIV programme (Paper 2).
