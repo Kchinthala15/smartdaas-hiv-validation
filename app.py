@@ -474,8 +474,13 @@ elif page == "📊 Predict Risk":
                 return 'background-color: #0d1f17; color: #3fb950'
 
             df_display = df_input[display_cols].sort_values('risk_pct', ascending=False)
-            styled = df_display.style.applymap(color_risk, subset=['risk_label'])
-            st.dataframe(styled, height=280, use_container_width=True)
+
+try:
+    styled = df_display.style.applymap(color_risk, subset=['risk_label'])
+    st.dataframe(styled, height=280, use_container_width=True)
+except Exception:
+    st.dataframe(df_display, height=280, use_container_width=True)
+
 
         # ── SHAP EXPLANATIONS ─────────────────────────────
         st.markdown("<br>", unsafe_allow_html=True)
