@@ -1,106 +1,69 @@
-# Paper 2: Facility-Level Structural Drivers of HIV Treatment Outcomes
+# SmartDaaS MVP v0.1
+### HIV Treatment Adherence Risk Prediction Platform
 
-## Overview
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://smartdaas.streamlit.app)
 
-Analysis code for:
-
-> **"Facility-Level Structural Drivers of HIV Treatment Outcomes: A Multi-Level Analysis of 27,288 Patients from a Nigerian HIV Programme and Implications for PEPFAR and Global Fund Programming"**
->
-> Lakshmi Kalyani Chinthala  
-> Independent Researcher, Golden Gate University  
-> ORCID: [0009-0009-8736-6673](https://orcid.org/0009-0009-8736-6673)  
-> Submitted to: BMJ Global Health
+**Author:** Lakshmi Kalyani Chinthala | Golden Gate University  
+**ORCID:** 0009-0009-8736-6673
 
 ---
 
-## Research Question
+## What it does
 
-Which facility-level characteristics (care level, ownership type, funding model) are independently associated with poor HIV treatment outcomes after adjustment for patient-level clinical factors?
+Upload a CSV of HIV patient records → get individual risk scores → see SHAP explanations for each patient.
 
----
-
-## Dataset
-
-**Quality of Care HIV Dataset** (same as Paper 1)
-- Source: [Kaggle — iogbonna (2022)](https://www.kaggle.com/datasets/iogbonna/quality-of-care-dataset-for-hiv-clients)
-- 27,288 HIV-positive patients on ART
-- Nigerian national HIV programme, July 2006 – December 2018
-- Place in `data/` directory before running
+**Risk tiers:**
+- 🔴 **HIGH** (score ≥ 70%) — priority for adherence intervention
+- 🟡 **MEDIUM** (score 40–69%) — enhanced monitoring
+- 🟢 **LOW** (score < 40%) — standard care pathway
 
 ---
 
-## Key Results
-
-| Finding | Result |
-|---------|--------|
-| Primary HC vs Tertiary (adjusted OR) | 1.95 (95% CI: 1.45–2.61, p<0.001) |
-| NGO funding (adjusted OR) | 1.24 (95% CI: 1.10–1.39, p<0.001) |
-| Federal funding (adjusted OR) | 1.25 (95% CI: 1.06–1.46, p=0.005) |
-| Sex — Female (adjusted OR) | 0.87 (95% CI: 0.79–0.96, p=0.003) |
-| ICC (facility-level clustering) | 2.2% |
-| LR test — facility vars improve fit | chi-squared=53.6, p<0.001 |
-| Excess poor outcomes (sub-tertiary) | ~397 in this dataset |
-
-> **Note:** Primary HC finding is preliminary (n=521, 1.9% of sample). External validation required.
-
----
-
-## Scripts (run in order)
-
-```
-paper2/src/
-├── 01_feature_engineering.py      # Outcome variables + facility features
-├── 02_descriptive_analysis.py     # Table 1 + chi-squared tests
-├── 03_logistic_regression.py      # Main model + HC3 robust SEs
-├── 04_icc_model_comparison.py     # ICC + AIC/BIC comparison
-├── 05_interaction_analysis.py     # Funding × facility level interactions
-├── 06_sensitivity_analyses.py     # 4 pre-specified sensitivity models
-├── 07_facility_typology.py        # Positive deviant analysis
-├── 08_missing_data.py             # Missing data characterisation
-├── 09_economic_implications.py    # Excess outcomes + cost estimates
-└── 10_figures.py                  # All 12 publication figures (300 DPI)
-```
-
-## Quick Start
+## Running locally
 
 ```bash
-# From repo root
 pip install -r requirements.txt
-
-# Place QualityOfCare.xlsx in data/
-
-python paper2/src/01_feature_engineering.py
-python paper2/src/02_descriptive_analysis.py
-python paper2/src/03_logistic_regression.py
-python paper2/src/04_icc_model_comparison.py
-python paper2/src/05_interaction_analysis.py
-python paper2/src/06_sensitivity_analyses.py
-python paper2/src/07_facility_typology.py
-python paper2/src/08_missing_data.py
-python paper2/src/09_economic_implications.py
-python paper2/src/10_figures.py
+streamlit run app.py
 ```
 
 ---
 
-## Methodological Notes
+## Deploying to Streamlit Cloud (free)
 
-- **Clustering:** 11 facility-level clusters precluded GEE or mixed-effects logistic regression (both require ≥20–30 clusters). HC3 heteroscedasticity-robust standard errors used throughout.
-- **ICC:** Estimated from null linear probability mixed model — 2.2% of variance attributable to facility level.
-- **SMOTE:** Not applied in this paper (outcomes modelled at natural prevalence for ecological validity).
-- **STROBE:** Reporting guidelines followed throughout.
+1. Fork this repo
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Connect your GitHub account
+4. Select this repo → `app.py`
+5. Click Deploy
+
+**Note:** The model file (`cv_results.pkl`) must be in the same directory as `app.py`.  
+Download from: https://github.com/Kchinthala15/smartdaas-hiv-validation
 
 ---
 
-## Part of a Two-Paper Series
+## Model
 
-| Paper | Focus | Journal |
-|-------|-------|---------|
-| Paper 1 | Patient-level ML prediction (AUC 0.963) | npj Digital Medicine (under review) |
-| Paper 2 | Facility-level health systems analysis | BMJ Global Health (submitted) |
+Random Forest trained on 192,732 HIV patient records.
+
+| Metric | Value |
+|--------|-------|
+| AUC (cross-validation) | 0.963 |
+| AUC (temporal validation) | 0.772 |
+| Sensitivity | 87.3% |
+| Specificity | 95.7% |
+
+**Paper:** Chinthala LK. "Real-World Validation of Machine Learning Models for HIV Treatment  
+Adherence Prediction." Submitted to *npj Digital Medicine*, 2026.
+
+---
+
+## ⚠️ Disclaimer
+
+Research prototype only. Not validated for clinical decision-making.  
+Do not use for individual patient treatment decisions without clinical review.
 
 ---
 
 ## License
 
-MIT — see root [LICENSE](../../LICENSE)
+MIT — see LICENSE
