@@ -206,10 +206,10 @@ header {visibility: hidden;}
 def load_model():
     """Load trained RF model from Paper 1."""
     try:
-        with open('/home/claude/results/cv_results.pkl', 'rb') as f:
+        with open('cv_results.pkl', 'rb') as f:
             cv = pickle.load(f)
         model = cv['rf_model']
-        with open('/home/claude/results/prepped_data.pkl', 'rb') as f:
+        with open('prepped_data.pkl', 'rb') as f:
             prep = pickle.load(f)
         features = prep['features']
         return model, features, cv['auc']
@@ -357,7 +357,7 @@ elif page == "📊 Predict Risk":
     if use_demo or uploaded is not None:
         if use_demo:
             # Load sample from training data
-            with open('/home/claude/results/prepped_data.pkl', 'rb') as f:
+            with open('prepped_data.pkl', 'rb') as f:
                 prep = pickle.load(f)
             X_demo = prep['X']
             y_demo = prep['y']
