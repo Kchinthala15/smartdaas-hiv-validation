@@ -499,10 +499,7 @@ elif page == "🏥  Facility Intelligence":
 
 
 
-# ═════════════════════════════════════════════════════════════
-#  PAGE 3 — FACILITY INTELLIGENCE
-# ═════════════════════════════════════════════════════════════
-elif page == "🏥  Facility Intelligence":
+
 
 st.markdown("""
     ### Facility-Level HIV Programme Intelligence
