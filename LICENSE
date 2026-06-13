@@ -1,21 +1,24 @@
-MIT License
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0)
 
-Copyright (c) 2026 Lakshmi Kalyani Chinthala
+Copyright (c) 2026 Lakshmi Kalyani Chinthala, SmartDaaS LLC
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+You are free to:
+- Share: copy and redistribute the material in any medium or format
+- Adapt: remix, transform, and build upon the material
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Under the following terms:
+- Attribution: You must give appropriate credit to the original author 
+  (Lakshmi Kalyani Chinthala, SmartDaaS LLC) and indicate if changes were made
+- NonCommercial: You may not use the material for commercial purposes 
+  without explicit written permission from SmartDaaS LLC
+- ShareAlike: If you remix or build upon this material, you must distribute 
+  your contributions under the same license
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Commercial use of this code, model, or platform — including but not limited 
+to deployment in HIV programmes, integration into commercial products, or use 
+in funded implementation projects — requires a separate commercial license 
+from SmartDaaS LLC.
+
+For commercial licensing inquiries: lkchinthala@smartdaas.org
+
+Full license terms: https://creativecommons.org/licenses/by-nc-sa/4.0/
