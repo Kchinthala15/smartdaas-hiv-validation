@@ -1,0 +1,24 @@
+# SmartDaaS v2 — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Core data
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Machine learning
+scikit-learn>=1.3.0
+scikit-survival>=0.21.0
+
+# Deep learning (transformer encoder, multi-task)
+torch>=2.0.0
+
+# Causal / uplift modeling
+econml>=0.14.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Optional: experiment tracking upgrade
+# mlflow>=2.0.0
+# wandb>=0.15.0
