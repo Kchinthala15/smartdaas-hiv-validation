@@ -85,8 +85,9 @@ def run_predictions(df_in):
         threshold_hi = local_threshold          # local optimal threshold
     else:
         probs = probs_raw
-        threshold_lo = 0.4
-        threshold_hi = 0.7
+        threshold_lo = 0.075
+        threshold_hi = 0.15
+        
 
     df_in = df_in.copy()
     df_in['risk_score'] = probs
