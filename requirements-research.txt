@@ -4,7 +4,7 @@
 # causal/uplift modelling), all of which are synthetic-data prototypes.
 # See LIMITATIONS.md §1.
 #
-# For the deployed application, use requirements-platform.txt.
+# For the deployed application, use requirements.txt.
 
 # Core data
 numpy>=1.24.0
