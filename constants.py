@@ -1,4 +1,4 @@
-"""
+F"""
 SmartDaaS v1.0 — Constants
 Lakshmi Kalyani Chinthala | Founder & Independent Researcher
 ORCID: 0009-0009-8736-6673
@@ -14,7 +14,7 @@ the model's inputs and configuration without reading app logic.
 # The 15 clinical variables used by the Random Forest classifier.
 # Order matters — must match the order used during training.
 # ─────────────────────────────────────────────────────────────
-FEATURES = [
+FEATURES = [F
     'Age', 'sex_female', 'Cd4AtStart', 'MostRecentCd4Count', 'CD4_improvement',
     'stage_start_num', 'WeightAtStart', 'weight_change', 'BMI_start', 'days_to_ART',
     'had_interruption', 'opp_infection', 'side_effects', 'tb_positive', 'stage_worsened'
@@ -256,7 +256,7 @@ COST_PER_POOR_OUTCOME = 1850  # USD — Menzies et al. AIDS 2011, Nigeria-specif
 # At this threshold on the temporal holdout:
 #   Sensitivity = 72.8%, Specificity = 98.8%
 # ─────────────────────────────────────────────────────────────
-BASELINE_THRESHOLD = 0.70
+BASELINE_THRESHOLD = 0.15
 
 # ─────────────────────────────────────────────────────────────
 # DATA TIER DEFINITIONS
@@ -336,7 +336,8 @@ RECAL_MAX_OUTCOME_MISS = 0.40  # Maximum allowed outcome missingness
 RECAL_MAX_FEAT_MISS    = 0.50  # Maximum allowed feature missingness (warning only)
 RECAL_ISOTONIC_MIN     = 500   # Min patients to use isotonic vs Platt scaling
 BOOTSTRAP_N            = 1000  # Bootstrap iterations for AUC confidence intervals
-BASELINE_AUC           = 0.772 # Temporal holdout AUC — primary operational estimate
+BASELINE_AUC           = 0.70
+# Temporal holdout AUC — primary operational estimate
 
 # ─────────────────────────────────────────────────────────────
 # OUTCOME COLUMN DETECTION
