@@ -1,0 +1,46 @@
+{
+  "version": "v1.1",
+  "seed": 42,
+  "source_file_sha256": "b839a42b7f3c35e72bba92c57b4f18907a54cac86d682ba48b2a9592e551c1ea",
+  "model_sha256": "91cb1b011d8b2ed51ddab8c5b20516d74141f1689ad006c118240bfe8b46b397",
+  "features": [
+    "Age",
+    "sex_female",
+    "Cd4AtStart",
+    "MostRecentCd4Count",
+    "CD4_improvement",
+    "stage_start_num",
+    "WeightAtStart",
+    "weight_change",
+    "BMI_start",
+    "days_to_ART",
+    "had_interruption",
+    "opp_infection",
+    "side_effects",
+    "tb_positive",
+    "stage_worsened"
+  ],
+  "n": 21273,
+  "prevalence": 0.036337,
+  "cutoff": "2016-09-14",
+  "metrics": {
+    "cv_auc": 0.8019,
+    "temporal_auc": 0.8124,
+    "brier": 0.0259,
+    "calibration_slope": 1.096
+  },
+  "thresholds": {
+    "high": 0.129135,
+    "medium": 0.047394
+  },
+  "lock_sha256": "7c90cae5fffb4b528ea55ee0dca06cf66147545f0cf7a425532c123f864c3e31",
+  "locked_utc": "2026-07-24T07:24:57Z",
+  "reproduce": "python retrain_v1_1.py -> lock_sha256 must match",
+  "outcome": "ArvAdherenceLatestLevel == 'Poor' at most recent visit (same-encounter; not a forecast)",
+  "validation_note": "Temporal split is by ART INITIATION date. The outcome has no timestamp in the source data, so this tests generalisation across initiation eras and follow-up durations, not calendar time. No external validation performed.",
+  "exclusions": [
+    "blank adherence outcome",
+    "age <18 or >100",
+    "unknown ART interruption status"
+  ]
+}
